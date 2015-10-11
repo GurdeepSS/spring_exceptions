@@ -24,7 +24,7 @@ public class ProjectsController {
     public ProjectsController() {
         this.project = new Project();
         project.setId(1);
-        project.setName("Sptring Exceptions");
+        project.setName("Spring Exceptions");
     }
 
     /**
