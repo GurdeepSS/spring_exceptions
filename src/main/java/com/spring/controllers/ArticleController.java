@@ -3,6 +3,7 @@ package com.spring.controllers;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.exceptions.ArticleNotFoundException;
 import com.spring.models.Article;
+import com.spring.services.ArticleService;
 
 /**
  * Articles Rest Controller
@@ -25,6 +27,9 @@ import com.spring.models.Article;
 @RequestMapping("/articles")
 public class ArticleController {
 
+    @Autowired
+    private ArticleService articleService;
+    
     private Article article;
 
     public ArticleController() {
@@ -43,8 +48,8 @@ public class ArticleController {
      */
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public Article get(@PathVariable(value = "id") int id) {
-        if (id == article.getId()) {
-            return article;
+        if (id > 0) {
+            return articleService.get();
         }
         throw new ArticleNotFoundException(id);
     }
@@ -61,5 +66,10 @@ public class ArticleController {
         map.put("id", String.valueOf(ex.getId()));
         map.put("reason", "Article not found.");
         return map;
+    }
+    
+    @Autowired
+    public void setArticleService(ArticleService articleService) {
+        this.articleService = articleService;
     }
 }
